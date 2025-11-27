@@ -10,7 +10,8 @@ class ParentAccount
 {
     private string $name;
 
-    private array $wallets = []; 
+    /** @var array<string, TeenWallet> */
+    private array $wallets = [];
 
     public function __construct(string $name)
     {
@@ -27,7 +28,7 @@ class ParentAccount
         $teen = $wallet->getTeenName();
 
         if (isset($this->wallets[$teen])) {
-            throw new InvalidArgumentException("Wallet already exists");
+            throw new InvalidArgumentException("Un wallet existe déjà pour $teen.");
         }
 
         $this->wallets[$teen] = $wallet;
@@ -36,7 +37,7 @@ class ParentAccount
     public function getWalletFor(string $teen): TeenWallet
     {
         if (!isset($this->wallets[$teen])) {
-            throw new InvalidArgumentException("Wallet not found");
+            throw new InvalidArgumentException("Aucun wallet trouvé pour $teen.");
         }
 
         return $this->wallets[$teen];
@@ -44,20 +45,16 @@ class ParentAccount
 
     public function getTotalBalance(): float
     {
-        $total = 0;
-
-        foreach ($this->wallets as $w) {
-            $total += $w->getBalance();
-        }
-
-        return $total;
+        return array_sum(
+            array_map(fn(TeenWallet $w) => $w->getBalance(), $this->wallets)
+        );
     }
 
     public function applyAllWeeklyAllowances(): void
     {
-        foreach ($this->wallets as $w) {
-            if ($w->getWeeklyAllowance() !== null) {
-                $w->applyWeeklyAllowance();
+        foreach ($this->wallets as $wallet) {
+            if ($wallet->getWeeklyAllowance() !== null) {
+                $wallet->applyWeeklyAllowance();
             }
         }
     }
