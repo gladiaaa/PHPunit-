@@ -25,6 +25,13 @@ php demo.php
 ```
 Ce fichier affiche des exemples d'utilisation des fonctions du projet.
 
+
+## Créer le coverage 
+
+Pour créer le coverage : 
+```bash
+vendor/bin/phpunit --coverage-html coverage
+```
 ## Structure du projet
 
 - `src/` : Contient le code source PHP.
@@ -41,5 +48,6 @@ Ce fichier affiche des exemples d'utilisation des fonctions du projet.
 Annic Ryan
 Dumas Jolly Axel
 Mouhajer Rayane
+Sakri Katia
 
 Readme.md généré Partiellement par IA
